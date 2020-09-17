@@ -1,8 +1,11 @@
-setwd("C:/Users/dzink/Documents/shinyr/App-1")
+#Call in data
 data1=readRDS('census-app/data/data1.rds')
+#I'll create the dynamic plot with gganimate and plotly
 library(gganimate)
 library(scales)
 data1$Year=as.numeric(as.character(data1$Year))
+
+#create the ggplot
 plot=ggplot() +
   geom_polygon(data=data1, 
                aes(long, lat, group=group, fill=data1[, 'shadow_share']), size=0.0001, 
@@ -24,8 +27,10 @@ plot=ggplot() +
         axis.text.y=element_blank(),
         axis.ticks.y=element_blank(), 
         plot.title = element_text(hjust = 0.5, size=12, face='bold'), legend.key.width = unit(3, "cm")) +
+  #tell the plot the transition based on YEAR
   transition_manual(Year)
 
+#animate the plot and save as .gif file
 animate(plot, renderer=gifski_renderer('share_dynamic2.gif'), duration=20)
 
 
